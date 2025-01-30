@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-Vue.use(Router)
-
 /* Layout */
 import Layout from '@/layout'
+
+Vue.use(Router)
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -39,7 +38,7 @@ export const constantRoutes = [
 
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/views/errorPage/404'),
     hidden: true
   },
 
@@ -56,36 +55,62 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/baseManagement',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/baseManagement/userManager',
+    name: 'BaseManagement',
+    meta: { title: '系统管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'userManager',
+        name: 'UserManager',
+        component: () => import('@/views/system/baseManagement/userManager/index'),
+        meta: { title: '用户管理', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'logManager',
+        name: 'LogManager',
+        component: () => import('@/views/system/baseManagement/logManager/index'),
+        meta: { title: '日志管理', icon: 'tree' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/textbookReservation',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        name: 'TextbookReservation',
+        component: () => import('@/views/system/textbookReservation/index'),
+        meta: { title: '教材预订', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/textbookCollection',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'TextbookCollection',
+        component: () => import('@/views/system/textbookCollection/index'),
+        meta: { title: '教材领取', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/payment',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Payment',
+        component: () => import('@/views/system/payment/index'),
+        meta: { title: '教材费支付', icon: 'form' }
       }
     ]
   },
