@@ -34,7 +34,7 @@
         key="index"
         type="index"
         align="center"
-        :label="$t('common.label.id')"
+        label="序号"
         :width="fieldList.length === 0 ? '' : 80"
       >
         <template v-slot="scope">
@@ -84,7 +84,7 @@
         key="handle"
         :fixed="handle.fixed"
         :align="handle.align || 'center'"
-        :label="handle.label || $t('common.label.operation')"
+        :label="handle.label || '操作'"
         :width="handle.width"
         :min-width="handle.minWidth"
       >
@@ -440,7 +440,7 @@ export default {
     async exportExcel() {
       if (!this.api) {
         this.$notify.warning({
-          message: this.$t('common.message.exportDataError'),
+          message: '导出数据错误',
           duration: 2000
         })
         return
@@ -460,7 +460,7 @@ export default {
     exportCurrentPage() {
       if (!this.api) {
         this.$notify.warning({
-          message: this.$t('common.message.exportDataError'),
+          message: '导出数据错误',
           duration: 2000
         })
         return
@@ -473,7 +473,7 @@ export default {
       const tHeader = []
       this.$refs.table.columns.forEach(el => {
         // 排除操作列
-        if (el.label !== this.$t('common.label.operation') && el.type !== 'selection' && el.label) {
+        if (el.label !== '操作' && el.type !== 'selection' && el.label) {
           tHeader.push(el.label)
         }
       })

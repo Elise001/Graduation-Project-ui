@@ -1,7 +1,6 @@
 <template>
   <button
     class="el-button"
-    @click="handleClick"
     :disabled="buttonDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
@@ -16,10 +15,11 @@
         'is-circle': circle
       }
     ]"
+    @click="handleClick"
   >
-    <i class="el-icon-loading" v-if="loading"></i>
-    <i :class="icon" v-if="icon && !loading"></i>
-    <span v-if="$slots.default"><slot></slot></span>
+    <i v-if="loading" class="el-icon-loading" />
+    <i v-if="icon && !loading" :class="icon" />
+    <span v-if="$slots.default"><slot /></span>
   </button>
 </template>
 <script>
@@ -73,12 +73,12 @@ export default {
       if (this.handleType) {
         let message = ''
         if (this.handleType === 'submit') {
-          message = this.$t('common.message.submit')
+          message = '确定'
         } else if (this.handleType === 'delete') {
-          message = this.$t('common.message.service_delete')
+          message = '返回'
         }
         this.svConfirmBox({
-          title: this.$t('common.title.indicate'),
+          title: '提示',
           message
         }).then(() => {
           this.$emit('click', evt)

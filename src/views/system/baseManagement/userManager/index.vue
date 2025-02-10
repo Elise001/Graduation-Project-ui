@@ -32,7 +32,7 @@
 import { delObj, pageQuery } from './api'
 
 export default {
-  name: 'User',
+  name: 'UserManager',
   data() {
     return {
       pageQuery,
@@ -41,12 +41,7 @@ export default {
         {
           type: 'input',
           prop: 'username',
-          label: '登陆账号'
-        },
-        {
-          type: 'input',
-          prop: 'password',
-          label: ''
+          label: '账号'
         },
         {
           type: 'input',
@@ -60,38 +55,13 @@ export default {
         },
         {
           type: 'input',
-          prop: 'email',
-          label: ''
-        },
-        {
-          type: 'input',
-          prop: 'sex',
-          label: ''
-        },
-        {
-          type: 'input',
           prop: 'type',
           label: '用户类型'
         },
         {
           type: 'input',
-          prop: 'crtTime',
-          label: ''
-        },
-        {
-          type: 'input',
           prop: 'isDisabled',
           label: '是否禁用'
-        },
-        {
-          type: 'input',
-          prop: 'departId',
-          label: '部门'
-        },
-        {
-          type: 'input',
-          prop: 'isSuperAdmin',
-          label: '超级管理员 0-否 1-是'
         }
       ],
       // 搜索条件
@@ -105,16 +75,6 @@ export default {
       ],
       // 通用按钮
       commonButtons: [
-        {
-          name: '列设置',
-          event: 'columnsSettings',
-          show: true
-        },
-        {
-          name: '重置列设置',
-          event: 'resetColumnSettings',
-          show: true
-        },
         {
           name: '导出全部',
           event: 'exportAll',

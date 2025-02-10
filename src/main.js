@@ -12,6 +12,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import SvMessageBox from '@/components/SvMessageBox/index.js'
+import SvConfirmBox from '@/components/SvConfirmBox/index.js'
 import globalComponents from '@/utils/globalComponents'
 import _ from 'lodash'
 
@@ -30,6 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 
 Vue.use(ElementUI, { locale })
 Vue.use(SvMessageBox)
+Vue.use(SvConfirmBox)
 Vue.use(globalComponents)
 Vue.use(_)
 

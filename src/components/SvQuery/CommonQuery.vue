@@ -5,7 +5,7 @@
       <!-- 搜索栏 -->
       <el-row>
         <el-col v-for="item in fields" :key="item.prop" :md="3" :lg="3" :xl="3">
-          <el-row>
+          <el-row style="padding-bottom: 10px">
             <!-- 文本输入框 -->
             <el-input
               v-if="item.type === 'input'"
@@ -41,7 +41,7 @@
             <el-date-picker
               v-if="item.type === 'date'"
               v-model="conditions[item.prop]"
-              :placeholder="item.placeholder ? item.placeholder : `${$t('common.placeholder.choose')}${item.label}`"
+              :placeholder="item.placeholder ? item.placeholder : `请选择${item.label}`"
               :disabled="!!item.disabled"
               :picker-options="item.pickerOptions"
               clearable
@@ -71,13 +71,9 @@
           </el-row>
         </el-col>
         <!-- 搜索 -->
-        <el-button type="primary" icon="el-icon-search" class="filter-item" @click="handleEvent('search')">{{
-          $t('common.button.search')
-        }}</el-button>
+        <el-button type="primary" icon="el-icon-search" class="filter-item" @click="handleEvent('search')">查询</el-button>
         <!-- 重置 -->
-        <el-button type="primary" icon="el-icon-refresh" class="filter-item" @click="resetFilter">{{
-          $t('common.button.reset')
-        }}</el-button>
+        <el-button type="primary" icon="el-icon-refresh" class="filter-item" @click="resetFilter">重置</el-button>
       </el-row>
     </div>
     <!-- 按钮 -->
@@ -202,16 +198,6 @@ export default {
           acc[key] = this.resetQuery[key] !== undefined ? this.resetQuery[key] : undefined
           return acc
         }, {})
-
-      // Object.fromEntries和Array.prototype.filter
-      // const filteredConditions = Object.fromEntries(
-      //   Object.entries(this.conditions)
-      //     .filter(([key]) => !['page', 'limit', 'orderBy'].includes(key))
-      //     .map(([key]) => [
-      //       key,
-      //       this.resetQuery[key] !== undefined ? this.resetQuery[key] : undefined
-      //     ])
-      // );
 
       this.$emit('update:data', filteredConditions)
       this.$emit('handle-button-event', 'search')

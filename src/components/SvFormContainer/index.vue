@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div class="sv-form-container-box" v-if="showButtons">
-      <el-button type="primary" @click="cancel">{{ $t('common.button.cancel') }}</el-button>
+    <div v-if="showButtons" class="sv-form-container-box">
+      <el-button type="primary" @click="cancel">取消</el-button>
       <sv-button
         v-for="item in buttons"
-        :type="item.type"
         :key="item.event"
-        :handleType="item.handleType"
+        :type="item.type"
+        :handle-type="item.handleType"
         @click="handleClick(item.event)"
       >
         {{ item.name }}
       </sv-button>
     </div>
     <div :style="showButtons ? 'padding-top: 50px;' : ''">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
