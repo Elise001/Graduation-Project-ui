@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message, MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -16,10 +16,7 @@ service.interceptors.request.use(
     // do something before request is sent
 
     if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers.Authorization = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
     }
     return config
   },
@@ -38,43 +35,70 @@ service.interceptors.response.use(
   */
 
   /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
+   * 下面的注释为通过response自定义code来标示请求状态，当code返回如下情况为权限有问题，登出并返回到登录页
+   * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中
    */
   response => {
     const res = response.data
 
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.status && res.status === 30101) {
+      Notification.warning({
+        title: '提示',
+        message: res.message,
+        duration: 2 * 1000
+      })
+    } else if (res.status && res.status !== 200 && res.status !== 501) {
       Message({
-        message: res.message || 'Error',
+        message: res.message,
         type: 'error',
         duration: 5 * 1000
       })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
-      return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      return res
+      return response.data
     }
   },
   error => {
     console.log('err' + error) // for debug
+    const response = error.response
+    if (response === undefined) {
+      Message({
+        message: '服务请求超时！',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
+    }
+    const info = response.data
+    if (response.status === 401 || info.status === 40101) {
+      MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+        confirmButtonText: '重新登录',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/LogOut').then(() => {
+          location.reload() // 为了重新实例化vue-router对象 避免bug
+        })
+      })
+    }
+    if (response.status === 403) {
+      Notification.warning({
+        title: '禁止',
+        message: info.message,
+        type: 'error',
+        duration: 2 * 1000
+      })
+      return Promise.reject('error')
+    }
+    if (response.status === 504) {
+      Message({
+        message: '后端服务异常，请联系管理员！',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
+    }
     Message({
-      message: error.message,
+      message: info.message,
       type: 'error',
       duration: 5 * 1000
     })
