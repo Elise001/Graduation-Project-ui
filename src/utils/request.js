@@ -3,11 +3,17 @@ import { Message, MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
+// 禁用IE下get请求缓存
+axios.defaults.headers.get['Cache-Control'] = 'no-cache'
+axios.defaults.headers.get.Pragma = 'no-cache'
+
+// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'  尝试阻止发送OPTIONS请求
+
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 500000 // request timeout
 })
 
 // request interceptor

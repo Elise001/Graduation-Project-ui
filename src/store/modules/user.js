@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    username: '',
+    type: ''
   }
 }
 
@@ -22,8 +23,11 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_USERNAME: (state, username) => {
+    state.username = username
+  },
+  SET_TYPE: (state, type) => {
+    state.type = type
   }
 }
 
@@ -44,24 +48,13 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async getInfo({ commit, state }) {
+    const response = await getInfo(state.token)
+    if (response !== undefined) {
+      commit('SET_NAME', response.data.name)
+      commit('SET_USERNAME', response.data.username)
+      commit('SET_TYPE', response.data.type)
+    }
   },
 
   // user logout
