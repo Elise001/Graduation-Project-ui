@@ -69,8 +69,8 @@ export const constantRoutes = [
       },
       {
         path: 'departManager',
-        name: 'LogManager',
-        component: () => import('@/views/system/baseManagement/logManager/index'),
+        name: 'DepartManager',
+        component: () => import('@/views/system/baseManagement/departManager/index'),
         meta: { title: '部门管理', icon: 'tree' }
       }
     ]
