@@ -7,7 +7,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     username: '',
-    type: ''
+    type: '',
+    avatar: ''
   }
 }
 
@@ -28,6 +29,9 @@ const mutations = {
   },
   SET_TYPE: (state, type) => {
     state.type = type
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar
   }
 }
 
@@ -54,6 +58,10 @@ const actions = {
       commit('SET_NAME', response.data.name)
       commit('SET_USERNAME', response.data.username)
       commit('SET_TYPE', response.data.type)
+      commit(
+        'SET_AVATAR',
+        'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+      )
     }
   },
 

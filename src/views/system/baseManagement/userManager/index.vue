@@ -8,7 +8,7 @@
       :extra-dicts="extraDicts"
       @handle-button-event="handleButtonEvent"
     />
-    <div style="padding: 20px">
+    <div style="padding: 30px">
       <sv-table
         ref="svTable"
         pk="id"
@@ -17,11 +17,13 @@
         :refresh="tableInfo.refresh"
         :field-list="tableInfo.fieldList"
         :data.sync="tableInfo.data"
+        :single-select="true"
+        :table-index="true"
         export-file-name="系统用户表"
         @selection-change="selectionChange"
       >
         <template #col-handle="{ row }">
-          <sv-button type="text" @click="handelDelete(row)">删除</sv-button>
+          <el-button type="text" @click="handelDelete(row)">删除</el-button>
         </template>
       </sv-table>
     </div>
@@ -56,12 +58,12 @@ export default {
         {
           type: 'input',
           prop: 'type',
-          label: '用户类型'
+          label: '年级'
         },
         {
           type: 'input',
-          prop: 'isDisabled',
-          label: '是否禁用'
+          prop: 'major',
+          label: '专业'
         }
       ],
       // 搜索条件
@@ -98,11 +100,6 @@ export default {
             minWidth: 150
           },
           {
-            label: '',
-            prop: 'password',
-            minWidth: 150
-          },
-          {
             label: '用户姓名',
             prop: 'name',
             minWidth: 150
@@ -113,38 +110,33 @@ export default {
             minWidth: 150
           },
           {
-            label: '',
+            label: '邮箱',
             prop: 'email',
             minWidth: 150
           },
           {
-            label: '',
+            label: '性别',
             prop: 'sex',
             minWidth: 150
           },
           {
-            label: '用户类型',
-            prop: 'type',
+            label: '年级',
+            prop: 'year',
             minWidth: 150
           },
           {
-            label: '',
+            label: '专业',
+            prop: 'major',
+            minWidth: 150
+          },
+          {
+            label: '创建时间',
             prop: 'crtTime',
             minWidth: 150
           },
           {
             label: '是否禁用',
             prop: 'isDisabled',
-            minWidth: 150
-          },
-          {
-            label: '部门',
-            prop: 'departId',
-            minWidth: 150
-          },
-          {
-            label: '超级管理员 0-否 1-是',
-            prop: 'isSuperAdmin',
             minWidth: 150
           },
           {

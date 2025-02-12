@@ -15,6 +15,8 @@ import SvMessageBox from '@/components/SvMessageBox/index.js'
 import SvConfirmBox from '@/components/SvConfirmBox/index.js'
 import globalComponents from '@/utils/globalComponents'
 import _ from 'lodash'
+import * as filters from './filters' // global filters
+import tagsOperation from '@/utils/tagsOperation'
 
 /**
  * If you don't want to use mock-server
@@ -34,7 +36,11 @@ Vue.use(SvMessageBox)
 Vue.use(SvConfirmBox)
 Vue.use(globalComponents)
 Vue.use(_)
+Vue.use(tagsOperation)
 
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 Vue.config.productionTip = false
 
 new Vue({

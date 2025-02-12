@@ -1,5 +1,4 @@
-// cover some element-ui styles
-
+//覆盖一些element-ui样式
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;
@@ -15,8 +14,38 @@
   display: none;
 }
 
+.cell {
+  .el-tag {
+    margin-right: 0px;
+  }
+}
 
-// to fixed https://github.com/ElemeFE/element/issues/2461
+.small-padding {
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.fixed-width {
+  .el-button--mini {
+    padding: 7px 10px;
+    width: 60px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px;
+    text-align: center;
+
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+}
+
+//暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
@@ -24,7 +53,18 @@
   margin: 0 auto;
 }
 
-// refine element ui upload
+//文章页textarea修改样式
+.article-textarea {
+  textarea {
+    padding-right: 40px;
+    resize: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #bfcbd9;
+  }
+}
+
+//element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
@@ -36,14 +76,76 @@
   }
 }
 
-// dropdown
-.el-dropdown-menu {
-  a {
-    display: block
+// size为small的el-button，改变padding
+.el-button--small,
+.el-button--small.is-round {
+  padding: 5px 8px;
+}
+
+// .el-table 表头可以选中
+.el-table th {
+  -moz-user-select: text !important;
+  -webkit-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+// form表左右间距为10px ，距离下一块的内容距离为10px
+.el-form-item--mini.el-form-item,
+.el-form-item--small.el-form-item {
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+// el-form的label-position为top时，label标签上下间距为0
+.el-form--label-top .el-form-item__label {
+  padding: 0;
+}
+
+// .el-dialog内容部分padding-top调整
+.el-dialog__body {
+  padding: 10px 20px 30px 20px;
+}
+
+// el-card标题区域padding调整减小
+.el-card__header {
+  padding: 12px 15px;
+}
+
+// el-card内容区域padding调整减小
+.el-card__body {
+  padding: 12px 15px;
+}
+
+// el-cascader下拉框设置高度
+.el-cascader-menu {
+  max-height: 300px;
+  min-height: 200px;
+}
+
+// .el-input输入框disabled下字体颜色加深
+.el-input.is-disabled .el-input__inner {
+  color: #606266 !important;
+}
+
+// .el-textarea输入框disabled下字体颜色加深
+.el-textarea.is-disabled .el-textarea__inner {
+  color: #606266 !important;
+}
+
+// .el-table 解决错位
+.el-table th.gutter {
+  display: table-cell !important;
+}
+
+.el-table__row {
+  td:not(.is-hidden):last-child {
+    right: -1px;
   }
 }
 
-// to fix el-date-picker css style
-.el-range-separator {
-  box-sizing: content-box;
+.el-table__header {
+  th:not(.is-hidden):last-child {
+    right: -1px;
+  }
 }

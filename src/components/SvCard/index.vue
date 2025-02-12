@@ -4,17 +4,19 @@
 -->
 <template>
   <el-card :style="cardStyle">
-    <div slot="header" v-if="title">
+    <div v-if="title" slot="header">
       <span style="color:#409EFF;font-weight:bold">{{ title }}</span>
     </div>
-    <slot></slot>
+    <slot />
   </el-card>
 </template>
 
 <script>
 export default {
   name: 'SvCard',
+  components: {},
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     title: {
       type: String
     },
@@ -35,7 +37,6 @@ export default {
       default: 10
     }
   },
-  components: {},
   data() {
     return {}
   },

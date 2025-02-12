@@ -55,11 +55,11 @@
         <template v-slot="scope">
           <!-- slot自定义列 -->
           <template v-if="item.type === 'slot'">
-            <slot :name="`col-${item.prop}`" :row="scope.row" />
+            <slot :name="`col-${item.prop}`" :row="scope.row" :index="scope.$index" :column="item" />
           </template>
           <!-- 链接 -->
           <template v-else-if="item.type === 'link'">
-            <a style="color:#409EFF" @click="openLink(item, scope.row)">{{ scope.row[item.prop] }}</a>
+            <a style="color: #409eff" @click="openLink(item, scope.row)">{{ scope.row[item.prop] }}</a>
           </template>
           <!-- 复杂标签 -->
           <div v-else-if="item.type === 'tag' && item.tagOptions">
@@ -77,41 +77,6 @@
           <span v-else>
             {{ scope.row[item.prop] | dictFilter(dicts[item.dictType]) }}
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="handle"
-        key="handle"
-        :fixed="handle.fixed"
-        :align="handle.align || 'center'"
-        :label="handle.label || '操作'"
-        :width="handle.width"
-        :min-width="handle.minWidth"
-      >
-        <template v-slot="scope">
-          <template v-for="(item, index) in handle.btList">
-            <!-- 自定义操作类型 -->
-            <slot v-if="item.slot" :name="`bt-${item.event}`" :data="{ item, row: scope.row }" />
-            <!-- 操作按钮 -->
-            <sv-button
-              v-if="
-                !item.slot &&
-                  item.show &&
-                  (!item.ifRender || item.ifRender(scope.row)) &&
-                  !btnHideSet(item.event, scope.row)
-              "
-              :key="index"
-              v-waves
-              size="small"
-              :type="item.type"
-              :icon="item.icon"
-              :handle-type="item.handleType"
-              :disabled="item.disabled || btnDisableSet(item.event, scope.row)"
-              @click="handleClick(item.event, scope.row, scope.$index)"
-            >
-              {{ item.label }}
-            </sv-button>
-          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -322,7 +287,19 @@ export default {
   updated() {
     this.$refs.table.doLayout()
   },
+  mounted() {
+    this.initColumns()
+  },
   methods: {
+    // 初始化列设置
+    initColumns() {
+      this.showFieldList = this.fieldList
+        .filter(item => !item.hidden)
+        .map(item => {
+          this.$set(item, 'show', true)
+          return item
+        })
+    },
     // 处理查询条件
     handleParams() {
       const obj = {}
@@ -379,6 +356,7 @@ export default {
     },
     // 单选选中行数据
     singleSelectionChange(row) {
+      console.log(row)
       this.$emit('selection-change', row)
     },
     // 选中行数据
