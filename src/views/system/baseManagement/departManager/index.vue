@@ -62,7 +62,11 @@ export default {
       },
       // 业务按钮
       bizButtons: [
-        //
+        {
+          name: '新增',
+          show: true,
+          event: 'add'
+        }
       ],
       // 通用按钮
       commonButtons: [

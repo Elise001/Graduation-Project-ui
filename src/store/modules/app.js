@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 
 const state = {
+  isLoading: false,
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
@@ -25,6 +26,9 @@ const mutations = {
   },
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
+  },
+  SET_LOADING: (state, status) => {
+    state.isLoading = status
   }
 }
 
@@ -37,6 +41,12 @@ const actions = {
   },
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
+  },
+  loadingStart({ commit }) {
+    commit('SET_LOADING', true)
+  },
+  loadingEnd({ commit }) {
+    commit('SET_LOADING', false)
   }
 }
 

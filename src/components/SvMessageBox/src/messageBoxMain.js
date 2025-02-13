@@ -32,7 +32,9 @@ const showNextMsg = () => {
       currentMsg = msgQueue.shift()
 
       const options = currentMsg.options
+      // eslint-disable-next-line no-unused-vars
       for (const prop in options) {
+        // eslint-disable-next-line no-prototype-builtins
         if (options.hasOwnProperty(prop)) {
           instance[prop] = options[prop]
         }

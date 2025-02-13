@@ -8,7 +8,7 @@
       :extra-dicts="extraDicts"
       @handle-button-event="handleButtonEvent"
     />
-    <div style="padding: 30px">
+    <div style="padding: 20px">
       <sv-table
         ref="svTable"
         pk="id"
@@ -23,18 +23,40 @@
         @selection-change="selectionChange"
       >
         <template #col-handle="{ row }">
-          <el-button type="text" @click="handelDelete(row)">删除</el-button>
+          <sv-button type="text" @click="handleConfirm(row, '1')">禁用</sv-button>
+          <sv-button type="text" @click="handleConfirm(row, '0')">恢复</sv-button>
+          <sv-button type="text" @click="handelReset(row)">密码重置</sv-button>
         </template>
       </sv-table>
     </div>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="添加"
+      width="40%"
+      :visible.sync="showDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <user-dialog
+        v-if="showDialog"
+        :id="currentRow.id"
+        :visible.sync="showDialog"
+        :status="status"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { delObj, pageQuery } from './api'
+import { pageQuery, passwordReset, putObj } from './api'
 
 export default {
   name: 'UserManager',
+  components: {
+    // 物料弹窗
+    'user-dialog': () => import('./components/userDialog.vue')
+  },
   data() {
     return {
       pageQuery,
@@ -73,7 +95,16 @@ export default {
       },
       // 业务按钮
       bizButtons: [
-        //
+        {
+          name: '新增',
+          show: true,
+          event: 'add'
+        },
+        {
+          name: '编辑',
+          show: true,
+          event: 'update'
+        }
       ],
       // 通用按钮
       commonButtons: [
@@ -97,53 +128,54 @@ export default {
           {
             label: '登陆账号',
             prop: 'username',
-            minWidth: 150
+            minWidth: 100
           },
           {
             label: '用户姓名',
             prop: 'name',
-            minWidth: 150
+            minWidth: 100
           },
           {
             label: '手机号',
             prop: 'mobilePhone',
-            minWidth: 150
+            minWidth: 120
           },
           {
             label: '邮箱',
             prop: 'email',
-            minWidth: 150
+            minWidth: 120
           },
           {
             label: '性别',
             prop: 'sex',
-            minWidth: 150
+            minWidth: 80
           },
           {
             label: '年级',
             prop: 'year',
-            minWidth: 150
+            dictType: 'year',
+            minWidth: 80
           },
           {
             label: '专业',
             prop: 'major',
-            minWidth: 150
+            minWidth: 120
           },
           {
             label: '创建时间',
             prop: 'crtTime',
-            minWidth: 150
+            minWidth: 120
           },
           {
             label: '是否禁用',
             prop: 'isDisabled',
-            minWidth: 150
+            dictType: 'yes_no',
+            minWidth: 80
           },
           {
             type: 'slot',
             label: '操作',
-            prop: 'handle',
-            minWidth: 150
+            prop: 'handle'
           }
         ],
         // 数据
@@ -151,7 +183,9 @@ export default {
       },
       // 手动字典
       extraDicts: {},
-      currentRow: {}
+      currentRow: {},
+      showDialog: false,
+      status: 'add'
     }
   },
   computed: {
@@ -170,17 +204,36 @@ export default {
     selectionChange(row) {
       this.currentRow = row
     },
-    async handelDelete(data) {
-      const message = '删除后将不可再恢复，谨慎操作，请确认是否需要删除？'
-      await this.$confirm(message, '删除', {
-        type: 'delete',
-        confirmButtonText: '确定',
-        cancelButtonText: '返回'
-      })
-        .then(async() => {
-          await delObj(data.id)
-          this.getList()
+    async handleConfirm(data, isDisabled) {
+      if (data.isDisabled === isDisabled) {
+        return this.$notify({
+          title: '提示',
+          type: 'warning',
+          message: '该账户已处于' + (isDisabled === '1' ? '禁用状态' : '恢复状态'),
+          duration: 2000
         })
+      }
+      const updateData = {
+        id: data.id,
+        isDisabled: isDisabled
+      }
+      await putObj(data.id, updateData)
+      this.getList()
+      return this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '操作成功',
+        duration: 2000
+      })
+    },
+    async handelReset(data) {
+      const res = await passwordReset(data)
+      if (res.status === 200) {
+        return this.svMessageBox({
+          title: res.data,
+          messageTitle: '新密码为：123456，请及时修改密码'
+        })
+      }
     },
     handleButtonEvent(event) {
       switch (event) {
@@ -193,9 +246,26 @@ export default {
         case 'exportCurrentPage': // 导出当前页
           this.$refs.svTable.exportCurrentPage()
           break
+        case 'add':
+          this.status = 'add'
+          this.showDialog = true
+          break
+        case 'update':
+          this.update()
+          break
         default:
           break
       }
+    },
+    update() {
+      if (!this.$refs.svTable.checkRow()) return
+
+      this.status = 'edit'
+      this.showDialog = true
+    },
+    handleCancel() {
+      this.showDialog = false
+      this.getList()
     }
   }
 }

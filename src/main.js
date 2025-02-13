@@ -17,6 +17,9 @@ import globalComponents from '@/utils/globalComponents'
 import _ from 'lodash'
 import * as filters from './filters' // global filters
 import tagsOperation from '@/utils/tagsOperation'
+import dict from './utils/dict'
+import inputRules from '@/utils/inputRules' // 引入输入验证
+import vueWaves from '@/directive/waves/index' // 水波纹指令
 
 /**
  * If you don't want to use mock-server
@@ -37,11 +40,15 @@ Vue.use(SvConfirmBox)
 Vue.use(globalComponents)
 Vue.use(_)
 Vue.use(tagsOperation)
+Vue.use(inputRules)
+Vue.use(vueWaves)
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 Vue.config.productionTip = false
+// 将字典挂载到Vue原型
+Vue.prototype.$dict = dict
 
 new Vue({
   el: '#app',

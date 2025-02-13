@@ -48,20 +48,6 @@
               @change="handleEvent(item.event, form[item.prop])"
             />
           </el-tooltip>
-          <!-- textarea类型 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <el-input
-              v-if="item.type === 'textareamore'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :placeholder="item.placeholder ? item.placeholder : `请填写${item.label}`"
-              :disabled="!!item.disabled"
-              :autosize="{ minRows: 5, maxRows: 10 }"
-              type="textarea"
-              @change="handleEvent(item.event, form[item.prop])"
-            />
-          </el-tooltip>
           <!-- password类型 -->
           <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
             <div slot="content" v-html="item.tooltip" />
@@ -74,20 +60,6 @@
               :show-password="!!item.showPassword"
               type="password"
               @change="handleEvent(item.event, form[item.prop])"
-            />
-          </el-tooltip>
-          <!-- passProgress类型，密码输入框带密码强度条 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <sv-pass-progress
-              v-if="item.type === 'passProgress'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :event="item.event"
-              :placeholder="item.placeholder"
-              :disabled="item.disabled"
-              :show-password="item.showPassword"
-              @change="handleEvent"
             />
           </el-tooltip>
           <!-- singlePopup类型，input框通过点击按钮选择输入 -->
@@ -208,37 +180,6 @@
               @change="handleEvent(item.event, form[item.prop])"
             />
           </el-tooltip>
-          <!-- citySelect类型，省市区选择组件 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <sv-city-select
-              v-if="item.type === 'citySelect'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :event="item.event"
-              :prop="item.prop"
-              :placeholder="item.placeholder"
-              :disabled="item.disabled"
-              :region="item.region"
-              :level="item.level"
-              @change="handleCitySelect"
-            />
-          </el-tooltip>
-          <!-- areaSelect类型，省市区街道选择组件，取自区域管理 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <sv-area-select
-              v-if="item.type === 'areaSelect'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :event="item.event"
-              :prop="item.prop"
-              :placeholder="item.placeholder"
-              :disabled="item.disabled"
-              :level="item.level"
-              @change="handleCitySelect"
-            />
-          </el-tooltip>
           <!-- radio类型 -->
           <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
             <div slot="content" v-html="item.tooltip" />
@@ -255,24 +196,6 @@
                 :label="el[item.optSet && item.optSet.label ? item.optSet.label : 'label']"
                 :disabled="!!item.disabled"
               >{{ el.name }}</el-radio>
-            </el-radio-group>
-          </el-tooltip>
-          <!-- radiobutton类型 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <el-radio-group
-              v-if="item.type === 'radiobutton'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :disabled="!!item.disabled"
-              @change="handleEvent(item.event, form[item.prop])"
-            >
-              <el-radio-button
-                v-for="el in getOptions(item) ? getOptions(item) : options[item.prop]"
-                :key="el[item.optSet && item.optSet.label ? item.optSet.label : 'label']"
-                :label="el[item.optSet && item.optSet.label ? item.optSet.label : 'label']"
-                :disabled="!!item.disabled"
-              />
             </el-radio-group>
           </el-tooltip>
           <!-- checkbox类型 -->
@@ -391,41 +314,6 @@
               @change="handleEvent(item.event, form[item.prop])"
             />
           </el-tooltip>
-          <!-- datetimerange类型 -->
-          <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
-            <div slot="content" v-html="item.tooltip" />
-            <el-date-picker
-              v-if="item.type === 'datetimerange'"
-              :ref="item.prop"
-              v-model="form[item.prop]"
-              :disabled="!!item.disabled"
-              :picker-options="item.pickerOptions"
-              :range-separator="item.rangeSeparator ? item.rangeSeparator : 'to'"
-              :start-placeholder="item.startPlaceholder ? item.startPlaceholder : 'start'"
-              :end-placeholder="item.endPlaceholder ? item.endPlaceholder : 'end'"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              style="width: 100%"
-              type="datetimerange"
-              @change="handleEvent(item.event, form[item.prop])"
-            />
-          </el-tooltip>
-          <!-- upload类型 -->
-          <sv-upload-file
-            v-if="item.type === 'upload'"
-            :ref="item.prop"
-            v-model="form[item.prop]"
-            :storage-type="item.storageType"
-            :multiple="item.multiple"
-            :file-type="item.fileType"
-            :limit="item.limit"
-            :disabled="item.disabled"
-            :list-type="item.listType"
-            :dir="item.dir"
-            :button-style="item.buttonStyle"
-            :value="item.value"
-            :size="item.size"
-            :badge-hidden="item.badgeHidden"
-          />
           <!-- 操作按钮 -->
           <el-tooltip effect="dark" :disabled="!item.tooltip" placement="right">
             <div slot="content" v-html="item.tooltip" />
@@ -453,6 +341,7 @@ export default {
   name: 'CommonForm',
   props: {
     // form表单
+    // eslint-disable-next-line vue/require-default-prop
     form: {
       type: Object
     },
@@ -462,6 +351,7 @@ export default {
       default: false
     },
     // 表单项列表
+    // eslint-disable-next-line vue/require-default-prop
     fieldList: {
       type: Array
     }
@@ -526,8 +416,7 @@ export default {
     // 下拉框选项，数据字典获取，或者直接通过feildList传入
     getOptions(item) {
       if (item.dict) {
-        // return this.$store.getters.dicts[item.dict]
-        return []
+        return this.$dict[item.dict]
       } else {
         return item.options
       }

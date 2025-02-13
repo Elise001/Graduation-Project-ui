@@ -19,8 +19,8 @@ const plugins = {
     Vue.component('SvQuery', SvQuery)
     Vue.component('SvForm', CommonForm)
     Vue.component('SvButton', SvButton)
-    Vue.component('SvButton', SvFormContainer)
-    Vue.component('SvButton', SvCard)
+    Vue.component('SvFormContainer', SvFormContainer)
+    Vue.component('SvCard', SvCard)
   }
 }
 export default plugins

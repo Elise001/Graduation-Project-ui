@@ -6,11 +6,15 @@
       :max-height="tableHeight"
       :max-width="tableWidth"
       :height="tableHeight"
+      row-height="40px"
       border
       v-bind="$attrs"
       :style="getTableStyle"
       :span-method="spanMethod"
       :show-summary="showSummary"
+      size="mini"
+      :row-style="{ height: '24px' }"
+      :cell-style="{ padding: '0px' }"
       v-on="$listeners"
       @select-all="handleSelectionChange"
       @selection-change="handleSelectionChange"
@@ -246,12 +250,8 @@ export default {
     }
   },
   computed: {
-    StringUtils() {
-      return StringUtils
-    },
     dicts() {
-      // return this.$store.getters.dicts
-      return []
+      return this.$dict
     },
     showColumns() {
       return this.showFieldList.filter(item =>

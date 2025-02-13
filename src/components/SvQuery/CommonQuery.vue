@@ -71,9 +71,9 @@
           </el-row>
         </el-col>
         <!-- 搜索 -->
-        <el-button type="primary" icon="el-icon-search" class="filter-item" @click="handleEvent('search')">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" class="filter-item" size="mini" @click="handleEvent('search')">查询</el-button>
         <!-- 重置 -->
-        <el-button type="primary" icon="el-icon-refresh" class="filter-item" @click="resetFilter">重置</el-button>
+        <el-button type="primary" icon="el-icon-refresh" class="filter-item" size="mini" @click="resetFilter">重置</el-button>
       </el-row>
     </div>
     <!-- 按钮 -->
@@ -86,12 +86,13 @@
           :type="item.type || 'primary'"
           :disabled="item.disabled"
           class="operate-btn"
+          size="mini"
           @click="handleEvent(item.event)"
         >
           {{ item.name }}
         </el-button>
       </template>
-      <span v-if="bizButtons.length && commonButtons.length">|</span>
+      <span v-if="bizButtons.length && commonButtons.length">&nbsp;|&nbsp;</span>
       <!-- 公共按钮 -->
       <template v-for="item in commonButtons">
         <el-button
@@ -100,6 +101,7 @@
           :type="item.type || 'primary'"
           :disabled="item.disabled"
           class="operate-btn"
+          size="mini"
           @click="handleEvent(item.event)"
         >
           {{ item.name }}
@@ -229,7 +231,7 @@ export default {
   font-size: 14px;
 }
 .condition-box {
-  margin: 10px 0;
+  margin-top: 10px;
 }
 .operate-btn {
   margin-bottom: 10px;

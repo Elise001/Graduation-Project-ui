@@ -37,3 +37,11 @@ export function putObj(id, obj) {
     data: obj
   })
 }
+
+export function passwordReset(data) {
+  return request({
+    url: '/user/passwordReset',
+    method: 'post',
+    data
+  })
+}

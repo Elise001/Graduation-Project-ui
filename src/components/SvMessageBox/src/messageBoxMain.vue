@@ -68,7 +68,7 @@
         </div>
         <div class="el-message-box__btns">
           <el-button ref="confirm" class="cancelButtonClass" @click.native="handleAction" @keydown.enter="handleAction">
-            {{ t('plugins.message.gotIt') }}
+            {{ '我知道了' }}
           </el-button>
         </div>
       </div>

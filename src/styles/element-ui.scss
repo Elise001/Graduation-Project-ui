@@ -76,10 +76,23 @@
   }
 }
 
+// 修改按钮属性
+.el-button {
+  font-size: 12px;
+}
+
 // size为small的el-button，改变padding
 .el-button--small,
 .el-button--small.is-round {
   padding: 5px 8px;
+}
+
+// 修改表格属性
+.el-table {
+  font-size: 12px;
+}
+.el-table td, .el-table th {
+  padding: 6px 0;
 }
 
 // .el-table 表头可以选中
@@ -97,14 +110,25 @@
   margin-bottom: 15px;
 }
 
-// el-form的label-position为top时，label标签上下间距为0
+.el-form-item__error {
+  margin-top: -8px;
+  font-size: 12px;
+}
+
+.el-form-item {
+  padding: 2px 10px;
+  margin-bottom: 8px;
+}
+
+  // el-form的label-position为top时，label标签上下间距为0
 .el-form--label-top .el-form-item__label {
   padding: 0;
+  line-height: 0;
 }
 
 // .el-dialog内容部分padding-top调整
 .el-dialog__body {
-  padding: 10px 20px 30px 20px;
+  padding: 10px 40px 20px 40px;
 }
 
 // el-card标题区域padding调整减小
@@ -121,6 +145,13 @@
 .el-cascader-menu {
   max-height: 300px;
   min-height: 200px;
+}
+
+// 修改输入框属性
+.el-input__inner {
+  font-size: 14px;
+  height: 28px;
+  line-height: 28px;
 }
 
 // .el-input输入框disabled下字体颜色加深

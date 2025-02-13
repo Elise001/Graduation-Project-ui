@@ -24,6 +24,7 @@ service.interceptors.request.use(
     if (store.getters.token) {
       config.headers.Authorization = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
     }
+    store.dispatch('app/loadingStart')
     return config
   },
   error => {
@@ -47,6 +48,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
+    store.dispatch('app/loadingEnd')
+
     if (res.status && res.status === 30101) {
       Notification.warning({
         title: '提示',
@@ -65,6 +68,9 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
+
+    store.dispatch('app/loadingEnd')
+
     const response = error.response
     if (response === undefined) {
       Message({
