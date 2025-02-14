@@ -13,7 +13,7 @@
       :span-method="spanMethod"
       :show-summary="showSummary"
       size="mini"
-      :row-style="{ height: '24px' }"
+      :row-style="{ height: '40px' }"
       :cell-style="{ padding: '0px' }"
       v-on="$listeners"
       @select-all="handleSelectionChange"

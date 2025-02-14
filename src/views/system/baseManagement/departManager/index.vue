@@ -17,6 +17,7 @@
         :refresh="tableInfo.refresh"
         :field-list="tableInfo.fieldList"
         :data.sync="tableInfo.data"
+        :table-index="true"
         export-file-name="部门表"
         tabel-width="70%"
         @selection-change="selectionChange"

@@ -41,16 +41,16 @@ export default {
         query
       })
     }
-    Vue.prototype.$closeTag = (vm, to) => {
-      const view = { path: vm.$route.path, name: vm.$route.name }
-      vm.$store.dispatch('tagsView/delVisitedViews', view).then(views => {
-        if (to) {
-          vm.$router.push(to)
-        } else {
-          const latestView = views.slice(-1)[0]
-          vm.$router.push(latestView.path)
-        }
-      })
-    }
+    // Vue.prototype.$closeTag = (vm, to) => {
+    //   const view = { path: vm.$route.path, name: vm.$route.name }
+    //   vm.$store.dispatch('tagsView/delVisitedViews', view).then(views => {
+    //     if (to) {
+    //       vm.$router.push(to)
+    //     } else {
+    //       const latestView = views.slice(-1)[0]
+    //       vm.$router.push(latestView.path)
+    //     }
+    //   })
+    // }
   }
 }

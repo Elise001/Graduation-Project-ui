@@ -10,6 +10,7 @@ import CommonForm from '@/components/SvForm/CommonForm'
 import SvButton from '@/components/SvButton/CommonButton'
 import SvFormContainer from '@/components/SvFormContainer/index'
 import SvCard from '@/components/SvCard/index'
+import SvExcelImport from '@/components/SvExecelImoprt'
 
 // 注册组件
 const plugins = {
@@ -21,6 +22,7 @@ const plugins = {
     Vue.component('SvButton', SvButton)
     Vue.component('SvFormContainer', SvFormContainer)
     Vue.component('SvCard', SvCard)
+    Vue.component('SvExcelImport', SvExcelImport)
   }
 }
 export default plugins

@@ -72,6 +72,12 @@ export const constantRoutes = [
         name: 'DepartManager',
         component: () => import('@/views/system/baseManagement/departManager/index'),
         meta: { title: '部门管理', icon: 'tree' }
+      },
+      {
+        path: 'logManager',
+        name: 'LogManager',
+        component: () => import('@/views/system/baseManagement/logManager/index'),
+        meta: { title: '日志管理', icon: 'form' }
       }
     ]
   },
@@ -92,12 +98,24 @@ export const constantRoutes = [
   {
     path: '/textbookCollection',
     component: Layout,
+    redirect: '/textbookCollection/collect',
+    name: 'TextbookCollection',
+    meta: {
+      title: '教材领取',
+      icon: 'nested'
+    },
     children: [
       {
-        path: 'index',
-        name: 'TextbookCollection',
-        component: () => import('@/views/system/textbookCollection/index'),
+        path: 'collect',
+        name: 'Collect',
+        component: () => import('@/views/system/textbookCollection/collect/index.vue'),
         meta: { title: '教材领取', icon: 'form' }
+      },
+      {
+        path: 'refund',
+        name: 'Refund',
+        component: () => import('@/views/system/textbookCollection/refund/index.vue'),
+        meta: { title: '教材退换', icon: 'form' }
       }
     ]
   },
@@ -116,59 +134,27 @@ export const constantRoutes = [
   },
 
   {
-    path: '/nested',
+    path: '/textbookManagement',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
+        path: 'index',
+        name: 'TextbookManagement',
+        component: () => import('@/views/system/textbookManagement/index'),
+        meta: { title: '教材管理', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/textbookManagementDetails',
+    component: Layout,
+    hidden: true,
+    children: [
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        path: '/textbookManagementDetails',
+        name: 'TextbookManagementDetails',
+        component: () => import('@/views/system/textbookManagement/components/TextbookManagementDetails.vue'),
+        meta: { title: '教材管理明细' }
       }
     ]
   },

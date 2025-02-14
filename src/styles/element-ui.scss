@@ -153,6 +153,10 @@
   height: 28px;
   line-height: 28px;
 }
+// 下拉框的小箭头
+.el-input__icon {
+  line-height: 0;
+}
 
 // .el-input输入框disabled下字体颜色加深
 .el-input.is-disabled .el-input__inner {

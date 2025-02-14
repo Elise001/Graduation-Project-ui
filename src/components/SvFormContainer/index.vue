@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$closeTag(this)
+      this.$router.back()
     },
     handleClick(event) {
       this.$emit('handle-click', event)
@@ -43,10 +43,11 @@ export default {
 .sv-form-container-box {
   position: fixed;
   z-index: 1999;
-  top: 90px;
-  width: 100%;
+  top: 45px;
+  width: 90%;
   overflow: hidden;
   padding: 10px;
+  margin: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid #ebeef5;
   background-color: #fff;
