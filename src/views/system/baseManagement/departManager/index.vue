@@ -18,19 +18,32 @@
         :field-list="tableInfo.fieldList"
         :data.sync="tableInfo.data"
         export-file-name="部门表"
+        tabel-width="70%"
         @selection-change="selectionChange"
       >
         <template #col-handle="{ row }">
-          <el-button type="text" @click="handelDelete(row)">编辑</el-button>
-        </template>
-        <template #col-handle="{ row }">
+          <el-button type="text" @click="handelEdit(row)">编辑</el-button>
           <el-button type="text" @click="handelDelete(row)">删除</el-button>
-        </template>
-        <template #col-handle="{ row }">
-          <el-button type="text" @click="handelDelete(row)">关联用户</el-button>
+          <el-button type="text">关联用户</el-button>
         </template>
       </sv-table>
     </div>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="添加"
+      width="30%"
+      :visible.sync="showDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <depart-dialog
+        v-if="showDialog"
+        :id="currentRow.id"
+        :visible.sync="showDialog"
+        :status="status"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -39,6 +52,10 @@ import { delObj, pageQuery } from './api'
 
 export default {
   name: 'Depart',
+  components: {
+    // 物料弹窗
+    'depart-dialog': () => import('./components/departDialog.vue')
+  },
   data() {
     return {
       pageQuery,
@@ -90,28 +107,27 @@ export default {
           {
             label: '部门编码',
             prop: 'departCode',
-            minWidth: 150
+            minWidth: 80
           },
           {
             label: '部门名称',
             prop: 'departName',
-            minWidth: 150
+            minWidth: 120
           },
-          {
-            label: '部门权限',
-            prop: 'permission',
-            minWidth: 150
-          },
+          // {
+          //   label: '部门权限',
+          //   prop: 'permission',
+          //   minWidth: 150
+          // },
           {
             label: '创建时间',
             prop: 'crtTime',
-            minWidth: 150
+            minWidth: 120
           },
           {
             type: 'slot',
             label: '操作',
-            prop: 'handle',
-            minWidth: 150
+            prop: 'handle'
           }
         ],
         // 数据
@@ -119,7 +135,9 @@ export default {
       },
       // 手动字典
       extraDicts: {},
-      currentRow: {}
+      currentRow: {},
+      showDialog: false,
+      status: 'add'
     }
   },
   computed: {
@@ -148,6 +166,12 @@ export default {
         .then(async() => {
           await delObj(data.id)
           this.getList()
+          this.$notify({
+            title: '成功',
+            type: 'success',
+            message: '操作成功',
+            duration: 2000
+          })
         })
     },
     handleButtonEvent(event) {
@@ -161,9 +185,22 @@ export default {
         case 'exportCurrentPage': // 导出当前页
           this.$refs.svTable.exportCurrentPage()
           break
+        case 'add':
+          this.status = 'add'
+          this.showDialog = true
+          break
         default:
           break
       }
+    },
+    handelEdit(data) {
+      this.selectionChange(data)
+      this.status = 'edit'
+      this.showDialog = true
+    },
+    handleCancel() {
+      this.showDialog = false
+      this.getList()
     }
   }
 }

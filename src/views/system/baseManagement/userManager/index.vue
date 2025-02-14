@@ -103,7 +103,7 @@ export default {
         {
           name: '编辑',
           show: true,
-          event: 'update'
+          event: 'edit'
         }
       ],
       // 通用按钮
@@ -250,14 +250,14 @@ export default {
           this.status = 'add'
           this.showDialog = true
           break
-        case 'update':
-          this.update()
+        case 'edit':
+          this.edit()
           break
         default:
           break
       }
     },
-    update() {
+    edit() {
       if (!this.$refs.svTable.checkRow()) return
 
       this.status = 'edit'
