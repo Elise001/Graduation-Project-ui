@@ -5,8 +5,6 @@
       class="el-message-box__wrapper"
       tabindex="-1"
       role="dialog"
-      aria-modal="true"
-      :aria-label="title || 'dialog'"
       @click.self="handleWrapperClick"
     >
       <div class="el-message-box">
@@ -18,7 +16,6 @@
           <button
             type="button"
             class="el-message-box__headerbtn"
-            aria-label="Close"
             @click="handleAction"
             @keydown.enter="handleAction"
           >

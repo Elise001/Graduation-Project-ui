@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { batch, delObj, pageQuery } from './api'
+import { batch, delObj, pageQuery, putObj } from './api'
 import { parseTime } from '@/utils'
 
 export default {
@@ -90,6 +90,11 @@ export default {
           name: '删除',
           show: true,
           event: 'delete'
+        },
+        {
+          name: '学生签名确认',
+          show: true,
+          event: 'studentSure'
         }
       ],
       // 通用按钮
@@ -201,6 +206,9 @@ export default {
         case 'delete':
           this.delete()
           break
+        case 'studentSure':
+          this.studentSure()
+          break
         case 'importDownload':
           window.open('/static/importTemp/预订批量导入模板.xlsx', '_blank')
           break
@@ -224,6 +232,12 @@ export default {
     },
     edit() {
       if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '00') {
+        return this.$message({
+          type: 'warning',
+          message: '只能编辑订单状态为【待学生确认】的订单'
+        })
+      }
 
       this.$openTag(this, {
         name: 'TextbookReservationDetail',
@@ -234,6 +248,13 @@ export default {
     },
     async delete() {
       if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '00') {
+        return this.$message({
+          type: 'warning',
+          message: '只能删除订单状态为【待学生确认】的订单'
+        })
+      }
+
       const message = '删除后将不可再恢复，谨慎操作，请确认是否需要删除？'
       await this.$confirm(message, '删除', {
         type: 'delete',
@@ -250,6 +271,34 @@ export default {
             message: '操作成功',
             duration: 2000
           })
+        })
+    },
+    async studentSure() {
+      if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '00') {
+        return this.$message({
+          type: 'warning',
+          message: '只能确认订单状态为【待学生确认】的订单'
+        })
+      }
+
+      const message = '签名确认后不可编辑，请谨慎操作'
+      await this.$confirm(message, '签名确认', {
+        type: 'edit',
+        confirmButtonText: '确定',
+        cancelButtonText: '返回'
+      })
+        .then(async() => {
+          const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '01' })
+          if (res.status === 200) {
+            this.getList()
+            return this.$notify({
+              title: '成功',
+              type: 'success',
+              message: '操作成功',
+              duration: 2000
+            })
+          }
         })
     },
     async excelImport(data) {
