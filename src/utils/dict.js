@@ -54,5 +54,31 @@ export default {
       labelDefault: '否',
       value: '0'
     }
+  ],
+  orderStatus: [
+    {
+      labelDefault: '待学生确认',
+      value: '00'
+    },
+    {
+      labelDefault: '待打印',
+      value: '01'
+    },
+    {
+      labelDefault: '待教材科审核',
+      value: '02'
+    },
+    {
+      labelDefault: '待领取',
+      value: '03'
+    },
+    {
+      labelDefault: '已领取',
+      value: '04'
+    },
+    {
+      labelDefault: '已取消',
+      value: '05'
+    }
   ]
 }

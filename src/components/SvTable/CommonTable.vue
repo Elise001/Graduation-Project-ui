@@ -73,7 +73,7 @@
           </div>
           <!-- 简单标签 -->
           <el-tag v-else-if="item.type === 'tag' && !item.tagOptions">
-            {{ scope.row[item.prop] }}
+            {{ scope.row[item.prop] | dictFilter(dicts[item.dictType]) }}
           </el-tag>
           <!-- 图片 -->
           <img v-else-if="item.type === 'image' && scope.row[item.prop]" height="50px" :src="scope.row[item.prop]">

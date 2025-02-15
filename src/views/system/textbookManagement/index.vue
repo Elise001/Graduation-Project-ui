@@ -18,6 +18,7 @@
         :data.sync="tableInfo.data"
         :selection="true"
         export-file-name="教材管理表"
+        tabel-width="60%"
         @selection-change="selectionChange"
       />
     </div>
@@ -30,8 +31,8 @@
 </template>
 
 <script>
-import { pageQuery } from './api'
-import { delObj } from '@/views/system/baseManagement/departManager/api'
+import { add, delObj, pageQuery } from './api'
+import { parseTime } from '@/utils'
 
 export default {
   name: 'TextbookManagement',
@@ -49,18 +50,6 @@ export default {
           type: 'input',
           prop: 'textbookName',
           label: '教材名字'
-        },
-        {
-          type: 'select',
-          prop: 'year',
-          dictType: 'year',
-          label: '年级'
-        },
-        {
-          type: 'select',
-          prop: 'major',
-          dictType: 'major',
-          label: '专业'
         }
       ],
       // 搜索条件
@@ -111,17 +100,6 @@ export default {
         // 表格字段
         fieldList: [
           {
-            label: '年级',
-            prop: 'year',
-            dictType: 'year',
-            minWidth: 80
-          },
-          {
-            label: '专业',
-            prop: 'major',
-            minWidth: 120
-          },
-          {
             label: '教材编号',
             prop: 'textbookCode',
             minWidth: 80
@@ -134,7 +112,7 @@ export default {
           {
             label: '教材单价',
             prop: 'price',
-            minWidth: 80
+            minWidth: 60
           },
           {
             label: '创建时间',
@@ -237,7 +215,30 @@ export default {
         })
     },
     async excelImport(data) {
-      console.log(data)
+      const list = []
+      data.forEach(item => {
+        const excelData = {}
+        excelData.textbookCode = item['教材编号']
+        excelData.textbookName = item['教材名字']
+        excelData.price = item['教材单价']
+        excelData.crtTime = parseTime(new Date())
+        list.push(excelData)
+      })
+
+      const res = await add(list)
+      try {
+        if (res.status === 200) {
+          this.getList()
+          this.$notify({
+            title: '成功',
+            type: 'success',
+            message: '添加成功',
+            duration: 2000
+          })
+        }
+      } catch (e) {
+        this.dialogExcelVisible = false
+      }
       this.dialogExcelVisible = false
     }
 

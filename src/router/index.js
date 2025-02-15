@@ -145,6 +145,7 @@ export const constantRoutes = [
       }
     ]
   },
+
   {
     path: '/textbookManagementDetails',
     component: Layout,
@@ -155,6 +156,20 @@ export const constantRoutes = [
         name: 'TextbookManagementDetails',
         component: () => import('@/views/system/textbookManagement/components/TextbookManagementDetails.vue'),
         meta: { title: '教材管理明细' }
+      }
+    ]
+  },
+
+  {
+    path: '/textbookReservationDetail',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/textbookReservationDetail',
+        name: 'TextbookReservationDetail',
+        component: () => import('@/views/system/textbookReservation/components/textbookReservationDetail.vue'),
+        meta: { title: '教材预订明细' }
       }
     ]
   },

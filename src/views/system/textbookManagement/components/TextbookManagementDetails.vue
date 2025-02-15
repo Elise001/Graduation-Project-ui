@@ -1,15 +1,6 @@
 <template>
   <sv-form-container :buttons="buttons" @handle-click="handleClick">
-    <sv-card style="margin-top: 20px">
-      <sv-form
-        ref="svForm"
-        :form.sync="form"
-        :field-list="fieldList"
-        :form-disabled="false"
-        @handle-event="handleEvent"
-      />
-    </sv-card>
-    <sv-card title="教材信息">
+    <sv-card title="教材信息" style="margin-top: 20px">
       <el-row style="margin-bottom: 20px;">
         <sv-button type="primary" :disabled="status === 'edit'" @click="handleAdd">新增</sv-button>
         <sv-button type="primary" :disabled="status === 'edit'" @click="handleDelete">删除</sv-button>
@@ -25,7 +16,7 @@
         @selection-change="selectionChange"
       >
         <template #col-textbookCode="{ row }">
-          <el-input v-model="row.textbookCode" placeholder="请填写教材编号" />
+          <el-input v-model="row.textbookCode" placeholder="请填写教材编号" :disabled="status === 'edit'" />
         </template>
         <template #col-textbookName="{ row }">
           <el-input v-model="row.textbookName" placeholder="请填写教材名字" />
@@ -63,31 +54,6 @@ export default {
           event: 'submit',
           name: '提交',
           show: true
-        }
-      ],
-      form: {},
-      fieldList: [
-        {
-          type: 'select',
-          prop: 'year',
-          label: '年级',
-          dict: 'year',
-          rules: {
-            required: true
-          },
-          disabled: false,
-          clearable: true
-        },
-        {
-          type: 'select',
-          prop: 'major',
-          label: '专业',
-          dict: 'major',
-          rules: {
-            required: true
-          },
-          disabled: false,
-          clearable: true
         }
       ],
       // 表格
@@ -144,13 +110,6 @@ export default {
     handleDelete() {
       this.tableInfo.data = this.tableInfo.data.filter(el => !this.currentRow.includes(el))
     },
-    handleEvent(event, data) {
-      switch (event) {
-        default:
-          console.log(event, data)
-          break
-      }
-    },
     handleClick(event) {
       console.log(event)
       switch (event) {
@@ -162,7 +121,6 @@ export default {
       }
     },
     async submit() {
-      if (!this.$refs.svForm.validate()) return
       // eslint-disable-next-line no-prototype-builtins
       if (!this.tableInfo.data.length || this.tableInfo.data.some(el => !el.hasOwnProperty('textbookCode') || !el.hasOwnProperty('textbookName') || !el.hasOwnProperty('price'))) {
         return this.$notify({
@@ -175,18 +133,12 @@ export default {
 
       let res
       if (this.status === 'add') {
-        const form = this.tableInfo.data.map(el => ({
-          ...this.form,
-          ...el,
-          'crtTime': parseTime(new Date())
-        }))
-        res = await add(form)
+        this.tableInfo.data.forEach(el => {
+          el.crtTime = parseTime(new Date())
+        })
+        res = await add(this.tableInfo.data)
       } else {
-        const form = {
-          ...this.form,
-          ...this.tableInfo.data[0]
-        }
-        res = await putObj(form.id, form)
+        res = await putObj(this.tableInfo.data[0].id, this.tableInfo.data[0])
       }
 
       if (res.status === 200) {
