@@ -176,7 +176,6 @@ export default {
     }
   },
   mounted() {
-    console.log('1', this.$dict)
     this.dicts = this.$dict
     // 在挂载阶段添加事件监听器，在窗口尺寸发生变化时更新Vue组件中的clientWidth数据属性
     window.addEventListener('resize', this.updateClientWidth)

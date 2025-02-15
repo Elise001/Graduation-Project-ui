@@ -7,8 +7,24 @@
         :field-list="fieldList"
         :form-disabled="false"
         @handle-event="handleEvent"
+        @handle-click="handleClick"
       />
     </sv-card>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="教材选择"
+      width="60%"
+      :visible.sync="showDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <textbook-dialog
+        v-if="showDialog"
+        :visible.sync="showDialog"
+        @handle-submit="handleSubmit"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </sv-form-container>
 </template>
 
@@ -19,6 +35,10 @@ import { parseTime } from '@/utils'
 
 export default {
   name: 'TextbookReservationDetail',
+  components: {
+    // 物料弹窗
+    'textbook-dialog': () => import('./textbookDialog.vue')
+  },
   data() {
     return {
       buttons: [
@@ -93,7 +113,8 @@ export default {
           disabled: false,
           clearable: true
         }
-      ]
+      ],
+      showDialog: false
     }
   },
   computed: {
@@ -120,10 +141,12 @@ export default {
       }
     },
     handleClick(event) {
-      console.log(event)
       switch (event) {
         case 'submit':
           this.submit()
+          break
+        case 'textbookCode':
+          this.showDialog = true
           break
         default:
           break
@@ -156,6 +179,16 @@ export default {
           duration: 2000
         })
       }
+    },
+    handleSubmit(data) {
+      console.log('data', data)
+      this.form.textbookCode = data.textbookCode
+      this.form.textbookName = data.textbookName
+      this.form.price = data.price
+      this.handleCancel()
+    },
+    handleCancel() {
+      this.showDialog = false
     }
   }
 }

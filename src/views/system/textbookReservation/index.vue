@@ -226,9 +226,9 @@ export default {
       if (!this.$refs.svTable.checkRow()) return
 
       this.$openTag(this, {
-        name: 'textbookReservationDetail',
+        name: 'TextbookReservationDetail',
         title: '教材预订明细',
-        id: this.currentRow[0].id,
+        id: this.currentRow.id,
         status: 'edit'
       })
     },

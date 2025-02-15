@@ -356,7 +356,6 @@ export default {
     },
     // 单选选中行数据
     singleSelectionChange(row) {
-      console.log(row)
       this.$emit('selection-change', row)
     },
     // 选中行数据
