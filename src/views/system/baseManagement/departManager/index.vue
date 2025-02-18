@@ -25,7 +25,7 @@
         <template #col-handle="{ row }">
           <el-button type="text" @click="handelEdit(row)">编辑</el-button>
           <el-button type="text" @click="handelDelete(row)">删除</el-button>
-          <el-button type="text">关联用户</el-button>
+          <el-button type="text" @click="handelAssociation(row)">关联用户</el-button>
         </template>
       </sv-table>
     </div>
@@ -45,6 +45,21 @@
         @handle-cancel="handleCancel"
       />
     </el-dialog>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="关联用户"
+      width="80%"
+      :visible.sync="associationDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <association-dialog
+        v-if="associationDialog"
+        :depart-id="currentRow.id"
+        :visible.sync="associationDialog"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -55,7 +70,9 @@ export default {
   name: 'Depart',
   components: {
     // 物料弹窗
-    'depart-dialog': () => import('./components/departDialog.vue')
+    'depart-dialog': () => import('./components/departDialog.vue'),
+    // 关联用户
+    'association-dialog': () => import('./components/associationDialog.vue')
   },
   data() {
     return {
@@ -138,6 +155,7 @@ export default {
       extraDicts: {},
       currentRow: {},
       showDialog: false,
+      associationDialog: false,
       status: 'add'
     }
   },
@@ -199,8 +217,13 @@ export default {
       this.status = 'edit'
       this.showDialog = true
     },
+    handelAssociation(data) {
+      this.selectionChange(data)
+      this.associationDialog = true
+    },
     handleCancel() {
       this.showDialog = false
+      this.associationDialog = false
       this.getList()
     }
   }

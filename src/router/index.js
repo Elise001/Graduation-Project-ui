@@ -83,70 +83,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/textbookReservation',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'TextbookReservation',
-        component: () => import('@/views/system/textbookReservation/index'),
-        meta: { title: '教材预订', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/textbookCollection',
-    component: Layout,
-    redirect: '/textbookCollection/collect',
-    name: 'TextbookCollection',
-    meta: {
-      title: '教材领取',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'collect',
-        name: 'Collect',
-        component: () => import('@/views/system/textbookCollection/collect/index.vue'),
-        meta: { title: '教材领取', icon: 'form' }
-      },
-      {
-        path: 'refund',
-        name: 'Refund',
-        component: () => import('@/views/system/textbookCollection/refund/index.vue'),
-        meta: { title: '教材退换', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/payment',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Payment',
-        component: () => import('@/views/system/payment/index'),
-        meta: { title: '教材费支付', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/textbookManagement',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'TextbookManagement',
-        component: () => import('@/views/system/textbookManagement/index'),
-        meta: { title: '教材管理', icon: 'table' }
-      }
-    ]
-  },
-
-  {
     path: '/textbookManagementDetails',
     component: Layout,
     hidden: true,
@@ -174,21 +110,79 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+export const asyncRoutes = [
+  {
+    path: '/textbookReservation',
+    component: Layout,
+    meta: { roles: ['admin', 'JYS', 'XSFZR'] }, // 添加权限拦截
+    children: [
+      {
+        path: 'index',
+        name: 'TextbookReservation',
+        component: () => import('@/views/system/textbookReservation/index'),
+        meta: { title: '教材预订', icon: 'form', roles: ['admin', 'JYS', 'XSFZR'] }
+      }
+    ]
+  },
+
+  {
+    path: '/textbookCollection',
+    component: Layout,
+    redirect: '/textbookCollection/collect',
+    name: 'TextbookCollection',
+    meta: {
+      title: '教材领取',
+      icon: 'nested',
+      roles: ['admin', 'JCK', 'XSFZR', 'CKGLY']
+    },
+    children: [
+      {
+        path: 'collect',
+        name: 'Collect',
+        component: () => import('@/views/system/textbookCollection/collect/index.vue'),
+        meta: { title: '教材领取', icon: 'form', roles: ['admin', 'JCK', 'XSFZR'] }
+      },
+      {
+        path: 'refund',
+        name: 'Refund',
+        component: () => import('@/views/system/textbookCollection/refund/index.vue'),
+        meta: { title: '教材退换', icon: 'form', roles: ['admin', 'JCK', 'XSFZR', 'CKGLY'] }
+      }
+    ]
+  },
+
+  {
+    path: '/payment',
+    component: Layout,
+    roles: ['admin', 'XSFZR'],
+    children: [
+      {
+        path: 'index',
+        name: 'Payment',
+        component: () => import('@/views/system/payment/index'),
+        meta: { title: '教材费支付', icon: 'form', roles: ['admin', 'XSFZR'] }
+      }
+    ]
+  },
+
+  {
+    path: '/textbookManagement',
+    component: Layout,
+    roles: ['JYS'],
+    children: [
+      {
+        path: 'index',
+        name: 'TextbookManagement',
+        component: () => import('@/views/system/textbookManagement/index'),
+        meta: { title: '教材管理', icon: 'table', roles: ['admin', 'JYS'] }
+      }
+    ]
+  }
+]
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),

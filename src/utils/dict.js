@@ -65,7 +65,7 @@ export default {
       value: '01'
     },
     {
-      labelDefault: '待教材科审核',
+      labelDefault: '待教材科审核打印',
       value: '02'
     },
     {
@@ -77,8 +77,16 @@ export default {
       value: '04'
     },
     {
-      labelDefault: '已取消',
+      labelDefault: '待教材科审核退换',
       value: '05'
+    },
+    {
+      labelDefault: '仓库管理确认',
+      value: '06'
+    },
+    {
+      labelDefault: '已退换',
+      value: '07'
     }
   ]
 }

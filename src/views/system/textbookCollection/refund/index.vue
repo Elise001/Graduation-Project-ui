@@ -16,24 +16,20 @@
         :refresh="tableInfo.refresh"
         :field-list="tableInfo.fieldList"
         :data.sync="tableInfo.data"
-        :selection="true"
-        export-file-name="教材管理表"
+        :table-index="true"
+        :single-select="true"
+        export-file-name="教材预订表"
         @selection-change="selectionChange"
       />
     </div>
-    <sv-excel-import
-      ref="svExcelImport"
-      :visible.sync="dialogExcelVisible"
-      @excel-import="excelImport"
-    />
   </div>
 </template>
 
 <script>
-import { pageQuery } from './api'
+import { pageQuery, putObj } from '@/views/system/textbookReservation/api.js'
 
 export default {
-  name: 'TextbookManagement',
+  name: 'TextbookReservation',
   data() {
     return {
       pageQuery,
@@ -41,13 +37,8 @@ export default {
       queryFieldList: [
         {
           type: 'input',
-          prop: 'textbookCode',
-          label: '教材编号'
-        },
-        {
-          type: 'input',
-          prop: 'textbookName',
-          label: '教材名字'
+          prop: 'orderCode',
+          label: '订单编号'
         },
         {
           type: 'select',
@@ -60,43 +51,44 @@ export default {
           prop: 'major',
           dictType: 'major',
           label: '专业'
+        },
+        {
+          type: 'input',
+          prop: 'textbookCode',
+          label: '教材编号'
+        },
+        {
+          type: 'input',
+          prop: 'textbookName',
+          label: '教材名字'
         }
       ],
       // 搜索条件
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        orderStatus: '04'
       },
       // 业务按钮
       bizButtons: [
         {
-          name: '新增',
+          name: '申请退换',
           show: true,
-          event: 'add'
+          event: 'orderStatus04'
         },
         {
-          name: '编辑',
+          name: '教材科审核',
           show: true,
-          event: 'edit'
+          event: 'orderStatus05'
         },
         {
-          name: '删除',
+          name: '仓库管理确认',
           show: true,
-          event: 'delete'
+          event: 'orderStatus06'
         }
       ],
       // 通用按钮
       commonButtons: [
-        {
-          name: '导入模板下载',
-          event: 'importDownload',
-          show: true
-        },
-        {
-          name: '导入',
-          event: 'import',
-          show: true
-        },
         {
           name: '导出全部',
           event: 'exportAll',
@@ -110,9 +102,26 @@ export default {
         // 表格字段
         fieldList: [
           {
+            label: '订单编号',
+            prop: 'orderCode',
+            minWidth: 120
+          },
+          {
+            label: '年级',
+            prop: 'year',
+            dictType: 'year',
+            minWidth: 80
+          },
+          {
+            label: '专业',
+            prop: 'major',
+            dictType: 'major',
+            minWidth: 120
+          },
+          {
             label: '教材编号',
             prop: 'textbookCode',
-            minWidth: 80
+            minWidth: 120
           },
           {
             label: '教材名字',
@@ -120,18 +129,20 @@ export default {
             minWidth: 120
           },
           {
-            label: '年级',
-            prop: 'year',
-            minWidth: 80
-          },
-          {
-            label: '专业',
-            prop: 'major',
-            minWidth: 120
-          },
-          {
             label: '教材单价',
             prop: 'price',
+            minWidth: 60
+          },
+          {
+            label: '教材数量',
+            prop: 'count',
+            minWidth: 60
+          },
+          {
+            type: 'tag',
+            label: '订单状态',
+            prop: 'orderStatus',
+            dictType: 'orderStatus',
             minWidth: 80
           },
           {
@@ -142,8 +153,7 @@ export default {
         // 数据
         data: []
       },
-      currentRow: [],
-      dialogExcelVisible: false
+      currentRow: {}
     }
   },
   computed: {
@@ -166,20 +176,14 @@ export default {
         case 'search':
           this.getList()
           break
-        case 'add':
-          this.add()
+        case 'orderStatus04':
+          this.orderStatus04()
           break
-        case 'edit':
-          this.edit()
+        case 'orderStatus05':
+          this.orderStatus05()
           break
-        case 'delete':
-          this.delete()
-          break
-        case 'importDownload':
-          window.open('/static/importTemp/教材批量导入模板.xlsx', '_blank')
-          break
-        case 'import': // 导入
-          this.dialogExcelVisible = true
+        case 'orderStatus06':
+          this.orderStatus06()
           break
         case 'exportAll': // 导出全部
           this.$refs.svTable.exportExcel()
@@ -188,18 +192,66 @@ export default {
           break
       }
     },
-    add() {
-      this.$openTag(this, {
-        name: 'TextbookManagementDetails',
-        title: '教材管理明细',
-        status: 'create'
-      })
-    },
-    async excelImport(data) {
-      console.log(data)
-      this.dialogExcelVisible = false
-    }
+    async orderStatus04() {
+      if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '04') {
+        return this.$message({
+          type: 'warning',
+          message: '请选择订单状态为【已领取】的订单'
+        })
+      }
 
+      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '05' })
+      if (res.status === 200) {
+        this.getList()
+        return this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '操作成功',
+          duration: 2000
+        })
+      }
+    },
+    async orderStatus05() {
+      if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '05') {
+        return this.$message({
+          type: 'warning',
+          message: '请选择订单状态为【待教材科审核退换】的订单'
+        })
+      }
+
+      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '06' })
+      if (res.status === 200) {
+        this.getList()
+        return this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '操作成功',
+          duration: 2000
+        })
+      }
+    },
+    async orderStatus06() {
+      if (!this.$refs.svTable.checkRow()) return
+      if (this.currentRow.orderStatus !== '06') {
+        return this.$message({
+          type: 'warning',
+          message: '请选择订单状态为【仓库管理确认】的订单'
+        })
+      }
+
+      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '07' })
+      if (res.status === 200) {
+        this.getList()
+        return this.$notify({
+          title: '成功',
+          type: 'success',
+          message: '操作成功',
+          duration: 2000
+        })
+      }
+    }
   }
 }
 </script>

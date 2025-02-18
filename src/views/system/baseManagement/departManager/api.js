@@ -8,6 +8,22 @@ export function pageQuery(query) {
   })
 }
 
+export function userPageQuery(query) {
+  return request({
+    url: '/departUser/getDepartUser',
+    method: 'get',
+    params: query
+  })
+}
+
+export function addDepartUser(obj) {
+  return request({
+    url: '/departUser',
+    method: 'post',
+    data: obj
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/depart',
@@ -26,6 +42,13 @@ export function getObj(id) {
 export function delObj(id) {
   return request({
     url: '/depart/' + id,
+    method: 'delete'
+  })
+}
+
+export function delDepartUser(id) {
+  return request({
+    url: '/departUser/' + id,
     method: 'delete'
   })
 }
