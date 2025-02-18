@@ -11,7 +11,7 @@
       <sv-table
         ref="svTable"
         pk="id"
-        :api="pageQuery"
+        :api="textbookReservationQuery"
         :query="listQuery"
         :refresh="tableInfo.refresh"
         :field-list="tableInfo.fieldList"
@@ -31,14 +31,14 @@
 </template>
 
 <script>
-import { batch, delObj, pageQuery, putObj } from './api'
+import { batch, delObj, putObj, textbookReservationQuery } from './api'
 import { parseTime } from '@/utils'
 
 export default {
   name: 'TextbookReservation',
   data() {
     return {
-      pageQuery,
+      textbookReservationQuery,
       // 搜索框
       queryFieldList: [
         {

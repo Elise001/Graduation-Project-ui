@@ -1,8 +1,24 @@
 import request from '@/utils/request'
 
-export function pageQuery(query) {
+export function textbookReservationQuery(query) {
   return request({
-    url: '/textbookOrder/pageQuery',
+    url: '/textbookOrder/textbookReservationQuery',
+    method: 'get',
+    params: query
+  })
+}
+
+export function collectQuery(query) {
+  return request({
+    url: '/textbookOrder/collectQuery',
+    method: 'get',
+    params: query
+  })
+}
+
+export function refundQuery(query) {
+  return request({
+    url: '/textbookOrder/refundQuery',
     method: 'get',
     params: query
   })
