@@ -22,6 +22,21 @@
         @selection-change="selectionChange"
       />
     </div>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="申请退换"
+      width="40%"
+      :visible.sync="showDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <return-dialog
+        v-if="showDialog"
+        :id="currentRow.id"
+        :visible.sync="showDialog"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -30,6 +45,10 @@ import { putObj, refundQuery } from '@/views/system/textbookReservation/api.js'
 
 export default {
   name: 'TextbookReservation',
+  components: {
+    // 物料弹窗
+    'return-dialog': () => import('./components/returnDialog.vue')
+  },
   data() {
     return {
       refundQuery,
@@ -138,6 +157,11 @@ export default {
             minWidth: 60
           },
           {
+            label: '退换数量',
+            prop: 'ref1',
+            minWidth: 60
+          },
+          {
             type: 'tag',
             label: '订单状态',
             prop: 'orderStatus',
@@ -152,7 +176,8 @@ export default {
         // 数据
         data: []
       },
-      currentRow: {}
+      currentRow: {},
+      showDialog: false
     }
   },
   computed: {
@@ -216,16 +241,7 @@ export default {
         })
       }
 
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '05' })
-      if (res.status === 200) {
-        this.getList()
-        return this.$notify({
-          title: '成功',
-          type: 'success',
-          message: '操作成功',
-          duration: 2000
-        })
-      }
+      this.showDialog = true
     },
     async orderStatus05() {
       if (!this.$refs.svTable.checkRow()) return
@@ -266,6 +282,10 @@ export default {
           duration: 2000
         })
       }
+    },
+    handleCancel() {
+      this.showDialog = false
+      this.getList()
     }
   }
 }

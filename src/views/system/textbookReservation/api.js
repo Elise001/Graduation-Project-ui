@@ -24,6 +24,14 @@ export function refundQuery(query) {
   })
 }
 
+export function paymentQuery(query) {
+  return request({
+    url: '/textbookOrder/paymentQuery',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/textbookOrder',

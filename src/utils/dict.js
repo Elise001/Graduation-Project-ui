@@ -73,7 +73,7 @@ export default {
       value: '03'
     },
     {
-      labelDefault: '已领取',
+      labelDefault: '已领取待支付',
       value: '04'
     },
     {
@@ -85,8 +85,12 @@ export default {
       value: '06'
     },
     {
-      labelDefault: '已退换',
+      labelDefault: '已退换待支付',
       value: '07'
+    },
+    {
+      labelDefault: '支付完成',
+      value: '08'
     }
   ]
 }
