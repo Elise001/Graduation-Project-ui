@@ -23,8 +23,8 @@
         @selection-change="selectionChange"
       >
         <template #col-handle="{ row }">
-          <el-button type="text" @click="handelEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handelDelete(row)">删除</el-button>
+          <el-button v-if="showButtons" type="text" @click="handelEdit(row)">编辑</el-button>
+          <el-button v-if="showButtons" type="text" @click="handelDelete(row)">删除</el-button>
           <el-button type="text" @click="handelAssociation(row)">关联用户</el-button>
         </template>
       </sv-table>
@@ -160,10 +160,21 @@ export default {
     }
   },
   computed: {
-    //
+    userType() {
+      return this.$store.getters.type
+    },
+    showButtons() {
+      return this.userType.includes('ADMIN')
+    },
+    updatedBizButtons() {
+      return this.bizButtons.map(button => ({
+        ...button,
+        show: this.showButtons
+      }))
+    }
   },
   created() {
-    //
+    this.bizButtons = this.updatedBizButtons
   },
   mounted() {
     this.getList()

@@ -66,24 +66,23 @@ export default {
       // 搜索条件
       listQuery: {
         page: 1,
-        limit: 20,
-        orderStatus: '01'
+        limit: 20
       },
       // 业务按钮
       bizButtons: [
         {
           name: '申请打印',
-          show: true,
+          show: false,
           event: 'orderStatus01'
         },
         {
           name: '教材科审核',
-          show: true,
+          show: false,
           event: 'orderStatus02'
         },
         {
           name: '领取教材',
-          show: true,
+          show: false,
           event: 'orderStatus03'
         }
       ],
@@ -157,9 +156,23 @@ export default {
     }
   },
   computed: {
+    userType() {
+      return this.$store.getters.type
+    }
   },
   created() {
-    //
+    if (this.userType.includes('ADMIN')) {
+      // eslint-disable-next-line no-return-assign
+      this.bizButtons.forEach(item => item.show = true)
+    } else {
+      if (this.userType.includes('XSFZR')) {
+        this.bizButtons.filter(el => el.name === '申请打印')[0].show = true
+        this.bizButtons.filter(el => el.name === '领取教材')[0].show = true
+      }
+      if (this.userType.includes('JCK')) {
+        this.bizButtons.filter(el => el.name === '教材科审核')[0].show = true
+      }
+    }
   },
   mounted() {
     this.getList()

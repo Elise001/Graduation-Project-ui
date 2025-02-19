@@ -66,24 +66,23 @@ export default {
       // 搜索条件
       listQuery: {
         page: 1,
-        limit: 20,
-        orderStatus: '04'
+        limit: 20
       },
       // 业务按钮
       bizButtons: [
         {
           name: '申请退换',
-          show: true,
+          show: false,
           event: 'orderStatus04'
         },
         {
           name: '教材科审核',
-          show: true,
+          show: false,
           event: 'orderStatus05'
         },
         {
           name: '仓库管理确认',
-          show: true,
+          show: false,
           event: 'orderStatus06'
         }
       ],
@@ -157,9 +156,25 @@ export default {
     }
   },
   computed: {
+    userType() {
+      return this.$store.getters.type
+    }
   },
   created() {
-    //
+    if (this.userType.includes('ADMIN')) {
+      // eslint-disable-next-line no-return-assign
+      this.bizButtons.forEach(item => item.show = true)
+    } else {
+      if (this.userType.includes('XSFZR')) {
+        this.bizButtons.filter(el => el.name === '申请退换')[0].show = true
+      }
+      if (this.userType.includes('JCK')) {
+        this.bizButtons.filter(el => el.name === '教材科审核')[0].show = true
+      }
+      if (this.userType.includes('CKGLY')) {
+        this.bizButtons.filter(el => el.name === '仓库管理确认')[0].show = true
+      }
+    }
   },
   mounted() {
     this.getList()

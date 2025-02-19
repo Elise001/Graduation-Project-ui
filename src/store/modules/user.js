@@ -7,7 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     username: '',
-    type: '',
+    type: [],
     avatar: ''
   }
 }
@@ -57,7 +57,7 @@ const actions = {
     if (response !== undefined) {
       commit('SET_NAME', response.data.name)
       commit('SET_USERNAME', response.data.username)
-      commit('SET_TYPE', response.data.type)
+      commit('SET_TYPE', response.data.departCode)
       commit(
         'SET_AVATAR',
         'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'

@@ -38,10 +38,10 @@
       </el-col>
       <el-col :span="1" style="text-align: center; margin: 0 20px">
         <div style="margin-top: 150px">
-          <el-button type="primary" @click="addAssocUser">添加</el-button>
+          <el-button v-if="showButtons" type="primary" @click="addAssocUser">添加</el-button>
         </div>
         <div style="margin-top: 50px">
-          <el-button type="danger" @click="deleteAssocUser">移除</el-button>
+          <el-button v-if="showButtons" type="danger" @click="deleteAssocUser">移除</el-button>
         </div>
       </el-col>
       <el-col :span="11">
@@ -139,6 +139,14 @@ export default {
       },
       selectedUser: [],
       selectedAssocUser: []
+    }
+  },
+  computed: {
+    userType() {
+      return this.$store.getters.type
+    },
+    showButtons() {
+      return this.userType.includes('ADMIN')
     }
   },
   mounted() {

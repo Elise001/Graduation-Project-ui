@@ -78,36 +78,36 @@ export default {
       bizButtons: [
         {
           name: '新增',
-          show: true,
+          show: false,
           event: 'add'
         },
         {
           name: '编辑',
-          show: true,
+          show: false,
           event: 'edit'
         },
         {
           name: '删除',
-          show: true,
+          show: false,
           event: 'delete'
         },
         {
-          name: '学生签名确认',
-          show: true,
-          event: 'studentSure'
+          name: '导入模板下载',
+          event: 'importDownload',
+          show: false
+        },
+        {
+          name: '导入',
+          event: 'import',
+          show: false
         }
       ],
       // 通用按钮
       commonButtons: [
         {
-          name: '导入模板下载',
-          event: 'importDownload',
-          show: true
-        },
-        {
-          name: '导入',
-          event: 'import',
-          show: true
+          name: '学生签名确认',
+          show: false,
+          event: 'studentSure'
         },
         {
           name: '导出全部',
@@ -178,9 +178,19 @@ export default {
     }
   },
   computed: {
+    userType() {
+      return this.$store.getters.type
+    }
   },
   created() {
-    //
+    if (this.userType.includes('ADMIN') || this.userType.includes('JYS')) {
+      // eslint-disable-next-line no-return-assign
+      this.bizButtons.forEach(item => item.show = true)
+    }
+    if (this.userType.includes('XSFZR')) {
+      // eslint-disable-next-line no-return-assign
+      this.commonButtons.forEach(item => item.show = true)
+    }
   },
   mounted() {
     this.getList()

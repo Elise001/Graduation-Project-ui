@@ -23,9 +23,9 @@
         @selection-change="selectionChange"
       >
         <template #col-handle="{ row }">
-          <sv-button type="text" @click="handleConfirm(row, '1')">禁用</sv-button>
-          <sv-button type="text" @click="handleConfirm(row, '0')">恢复</sv-button>
-          <sv-button type="text" @click="handelReset(row)">密码重置</sv-button>
+          <sv-button v-if="showButtons" type="text" @click="handleConfirm(row, '1')">禁用</sv-button>
+          <sv-button v-if="showButtons" type="text" @click="handleConfirm(row, '0')">恢复</sv-button>
+          <sv-button v-if="showButtons" type="text" @click="handelReset(row)">密码重置</sv-button>
         </template>
       </sv-table>
     </div>
@@ -189,10 +189,21 @@ export default {
     }
   },
   computed: {
-    //
+    userType() {
+      return this.$store.getters.type
+    },
+    showButtons() {
+      return this.userType.includes('ADMIN') || this.userType.includes('JYS')
+    },
+    updatedBizButtons() {
+      return this.bizButtons.map(button => ({
+        ...button,
+        show: this.showButtons
+      }))
+    }
   },
   created() {
-    //
+    this.bizButtons = this.updatedBizButtons
   },
   mounted() {
     this.getList()
