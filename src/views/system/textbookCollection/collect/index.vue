@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { collectQuery, putObj } from '@/views/system/textbookReservation/api.js'
+import { collectQuery, orderStatus01, orderStatus02, orderStatus03 } from '@/views/system/textbookReservation/api.js'
 
 export default {
   name: 'TextbookReservation',
@@ -213,8 +213,12 @@ export default {
           message: '请选择订单状态为【待打印】的订单'
         })
       }
-
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '02' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '02',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus01(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({
@@ -233,8 +237,12 @@ export default {
           message: '请选择订单状态为【待教材科审核】的订单'
         })
       }
-
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '03' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '03',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus02(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({
@@ -253,8 +261,12 @@ export default {
           message: '请选择订单状态为【待领取】的订单'
         })
       }
-
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '04' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '04',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus03(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getObj, putObj } from '@/views/system/textbookReservation/api'
+import { getObj, orderStatus04 } from '@/views/system/textbookReservation/api'
 
 export default {
   name: 'UserDialog',
@@ -110,8 +110,12 @@ export default {
     async handleSubmit() {
       if (!this.$refs.svForm.validate()) return
 
-      this.form.orderStatus = '05'
-      const res = await putObj(this.form.id, this.form)
+      const form = {
+        ...this.form,
+        orderStatus: '05',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus04(form)
 
       if (res.status === 200) {
         this.$notify({

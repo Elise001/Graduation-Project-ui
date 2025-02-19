@@ -69,3 +69,67 @@ export function batch(obj) {
     data: obj
   })
 }
+
+export function studentSure(data) {
+  return request({
+    url: '/textbookOrder/studentSure',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus01(data) {
+  return request({
+    url: '/textbookOrder/orderStatus01',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus02(data) {
+  return request({
+    url: '/textbookOrder/orderStatus02',
+    method: 'post',
+    data
+  })
+}
+export function orderStatus03(data) {
+  return request({
+    url: '/textbookOrder/orderStatus03',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus04(data) {
+  return request({
+    url: '/textbookOrder/orderStatus04',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus05(data) {
+  return request({
+    url: '/textbookOrder/orderStatus05',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus06(data) {
+  return request({
+    url: '/textbookOrder/orderStatus06',
+    method: 'post',
+    data
+  })
+}
+
+export function orderStatus07(data) {
+  return request({
+    url: '/textbookOrder/orderStatus07',
+    method: 'post',
+    data
+  })
+}
+

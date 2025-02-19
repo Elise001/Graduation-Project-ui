@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { batch, delObj, putObj, textbookReservationQuery } from './api'
+import { batch, delObj, studentSure, textbookReservationQuery } from './api'
 import { parseTime } from '@/utils'
 
 export default {
@@ -299,7 +299,12 @@ export default {
         cancelButtonText: '返回'
       })
         .then(async() => {
-          const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '01' })
+          const form = {
+            ...this.currentRow,
+            orderStatus: '01',
+            crtUserName: this.$store.getters.name
+          }
+          const res = await studentSure(form)
           if (res.status === 200) {
             this.getList()
             return this.$notify({

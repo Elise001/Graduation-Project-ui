@@ -158,6 +158,7 @@ export default {
       let res
       if (this.status === 'add') {
         this.form.crtTime = parseTime(new Date())
+        this.form.crtUserName = this.$store.getters.name
         res = await addObj(this.form)
       } else {
         res = await putObj(this.form.id, this.form)

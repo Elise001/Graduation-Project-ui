@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { paymentQuery, putObj } from '@/views/system/textbookReservation/api.js'
+import { orderStatus07, paymentQuery } from '@/views/system/textbookReservation/api.js'
 
 export default {
   name: 'Payment',
@@ -157,7 +157,12 @@ export default {
         })
       }
 
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '08' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '08',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus07(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({

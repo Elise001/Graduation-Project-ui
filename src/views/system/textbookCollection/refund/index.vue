@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { putObj, refundQuery } from '@/views/system/textbookReservation/api.js'
+import { orderStatus05, orderStatus06, refundQuery } from '@/views/system/textbookReservation/api.js'
 
 export default {
   name: 'TextbookReservation',
@@ -252,7 +252,12 @@ export default {
         })
       }
 
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '06' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '06',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus05(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({
@@ -272,7 +277,12 @@ export default {
         })
       }
 
-      const res = await putObj(this.currentRow.id, { id: this.currentRow.id, orderStatus: '07' })
+      const form = {
+        ...this.currentRow,
+        orderStatus: '07',
+        crtUserName: this.$store.getters.name
+      }
+      const res = await orderStatus06(form)
       if (res.status === 200) {
         this.getList()
         return this.$notify({
