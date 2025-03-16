@@ -92,5 +92,27 @@ export default {
       labelDefault: '支付完成',
       value: '08'
     }
+  ],
+  class: [
+    {
+      labelDefault: '一班',
+      value: '1'
+    },
+    {
+      labelDefault: '二班',
+      value: '2'
+    },
+    {
+      labelDefault: '三班',
+      value: '3'
+    },
+    {
+      labelDefault: '四班',
+      value: '4'
+    },
+    {
+      labelDefault: '五班',
+      value: '5'
+    }
   ]
 }

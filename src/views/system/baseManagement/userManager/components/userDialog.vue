@@ -92,20 +92,6 @@ export default {
           xl: 24
         },
         {
-          type: 'text',
-          prop: 'email',
-          label: '邮箱',
-          rules: {
-            required: false
-          },
-          disabled: false,
-          clearable: true,
-          sm: 24,
-          md: 24,
-          lg: 24,
-          xl: 24
-        },
-        {
           type: 'select',
           prop: 'sex',
           label: '性别',
@@ -152,13 +138,12 @@ export default {
         },
         {
           type: 'select',
-          prop: 'isSuperAdmin',
-          label: '超级管理员 0-否 1-是',
+          prop: 'attr1',
+          label: '班级',
           rules: {
             required: false
           },
-          dict: 'yes_no',
-          disabled: true,
+          dict: 'class',
           clearable: true,
           sm: 24,
           md: 24,

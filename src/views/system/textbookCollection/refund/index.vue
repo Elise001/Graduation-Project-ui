@@ -137,6 +137,12 @@ export default {
             minWidth: 120
           },
           {
+            label: '班级',
+            prop: 'ref3',
+            dictType: 'class',
+            minWidth: 120
+          },
+          {
             label: '教材编号',
             prop: 'textbookCode',
             minWidth: 120

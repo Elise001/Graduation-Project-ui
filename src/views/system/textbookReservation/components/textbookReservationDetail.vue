@@ -80,6 +80,17 @@ export default {
           clearable: true
         },
         {
+          type: 'select',
+          prop: 'ref3',
+          label: '班级',
+          dict: 'class',
+          rules: {
+            required: true
+          },
+          disabled: false,
+          clearable: true
+        },
+        {
           type: 'singlePopup',
           prop: 'textbookCode',
           label: '教材编号',

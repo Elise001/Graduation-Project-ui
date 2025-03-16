@@ -136,19 +136,14 @@ export default {
             minWidth: 100
           },
           {
-            label: '手机号',
-            prop: 'mobilePhone',
-            minWidth: 120
-          },
-          {
-            label: '邮箱',
-            prop: 'email',
-            minWidth: 120
-          },
-          {
             label: '性别',
             prop: 'sex',
             minWidth: 80
+          },
+          {
+            label: '手机号',
+            prop: 'mobilePhone',
+            minWidth: 120
           },
           {
             label: '年级',
@@ -160,6 +155,12 @@ export default {
             label: '专业',
             prop: 'major',
             minWidth: 120
+          },
+          {
+            label: '班级',
+            prop: 'attr1',
+            dictType: 'class',
+            minWidth: 80
           },
           {
             label: '创建时间',

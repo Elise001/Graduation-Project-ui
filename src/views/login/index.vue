@@ -48,14 +48,30 @@
           />
         </span>
       </el-form-item>
-
+      <sv-button style="float: right; color: burlywood" type="text" @click="register">注册</sv-button>
       <el-button
         :loading="loading"
         type="primary"
-        style="width: 100%; margin-bottom: 30px"
+        style="width: 100%; margin-bottom: 30px; margin-left: 0"
         @click.native.prevent="handleLogin"
+        @keyup.enter.native="handleLogin"
       >Login</el-button>
     </el-form>
+    <el-dialog
+      style="margin-top:-80px;"
+      title="添加"
+      width="40%"
+      :visible.sync="showDialog"
+      :close-on-click-modal="false"
+      append-to-body
+    >
+      <user-dialog
+        v-if="showDialog"
+        :visible.sync="showDialog"
+        status="add"
+        @handle-cancel="handleCancel"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -63,6 +79,10 @@
 
 export default {
   name: 'Login',
+  components: {
+    // 物料弹窗
+    'user-dialog': () => import('@/views/system/baseManagement/userManager/components/userDialog.vue')
+  },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -83,7 +103,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      showDialog: false
     }
   },
   watch: {
@@ -123,14 +144,24 @@ export default {
           return false
         }
       })
+    },
+    register() {
+      this.showDialog = true
+    },
+    handleCancel() {
+      this.showDialog = false
+      return this.$notify({
+        title: '成功',
+        type: 'success',
+        message: '创建成功',
+        duration: 2000
+      })
     }
   }
 }
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
 $light_gray: #fff;
@@ -151,16 +182,16 @@ $cursor: #fff;
 
     input {
       background: transparent;
-      border: 0px;
+      border: 0;
       -webkit-appearance: none;
-      border-radius: 0px;
+      border-radius: 0;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
+        box-shadow: 0 0 0 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
     }
@@ -183,7 +214,10 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-image: url("../../assets/background.webp");
+  background-size: cover; /* 图片覆盖整个容器 */
+  background-position: center; /* 图片居中显示 */
+  background-repeat: no-repeat; /* 防止图片重复 */
   overflow: hidden;
 
   .login-form {
@@ -221,7 +255,7 @@ $light_gray: #eee;
     .title {
       font-size: 26px;
       color: $light_gray;
-      margin: 0px auto 40px auto;
+      margin: 0 auto 40px auto;
       text-align: center;
       font-weight: bold;
     }
